@@ -1,9 +1,0 @@
-.key {
-	border: 1px solid #000;
-	width: 40px;
-	height: 40px;
-}
-
-.key.playing {
-	border: 1px solid blue;
-}
