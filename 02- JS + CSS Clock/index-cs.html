@@ -12,44 +12,156 @@
                 width: 1000px;
                 margin: 0 auto;
                 text-align: center;
+                padding-top:20px;
             }
 
             #clock {
                 position: relative;
+                width: 200px;
+                height: 200px;
+                padding: 20px;
+                border: 4px solid #000;
+                border-radius: 50%;
             }
 
-            #clock .hand {
-                position: absolute;
-                width: 10px;
-                height: 100px;
-                border: 1px solid red;
-            }
+                #clock #hands {
+                    position: absolute;
+                    left: 120px;
+                    top: 30px;
+                }
+
+                    #hands .center {
+                        width: 10px;
+                        height: 10px;
+                        background-color: #000;
+                        top: 85px;
+                        position: absolute;
+                        z-index: 100;
+                        border-radius: 50%;
+                    }
+
+                    #hands .hand {
+                        position: absolute;
+                        transform-origin: 50% 100%;
+                        width: 10px;
+                        height: 90px;
+                    }
+
+                        .hand#second {
+                            position: absolute;
+                            width: 4px;
+                            background-color: #00B5FA;
+                        }
+                        .hand#minute {
+                            position: absolute;
+                            width: 4px;
+                            background-color: #4C2BFA;
+                        }
+                        .hand#hour {
+                            position: absolute;
+                            width: 6px;
+                            background-color: #14C70E;
+                        }
+
+                #clock #face {
+                    position: absolute;
+                    width: 200px;
+                    height: 200px;
+                    padding: 20px;
+                    left: -6px;
+                    top: -12px;
+                }
+
+                #face .hour {
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    width: 10px;
+                    height: 10px;
+                }
+
+                    .hour.number30 {
+                        transform: rotate(30deg) translate(100px) rotate(-30deg);
+                    }
+                    .hour.number60 {
+                        transform: rotate(60deg) translate(100px) rotate(-60deg);
+                    }
+                    .hour.number90 {
+                        transform: rotate(90deg) translate(100px) rotate(-90deg);
+                    }
+                    .hour.number120 {
+                        transform: rotate(120deg) translate(100px) rotate(-120deg);
+                    }
+                    .hour.number150 {
+                        transform: rotate(150deg) translate(100px) rotate(-150deg);
+                    }
+                    .hour.number180 {
+                        transform: rotate(180deg) translate(100px) rotate(-180deg);
+                    }
+                    .hour.number210 {
+                        transform: rotate(210deg) translate(100px) rotate(-210deg);
+                    }
+                    .hour.number240 {
+                        transform: rotate(240deg) translate(100px) rotate(-240deg);
+                    }
+                    .hour.number270 {
+                        transform: rotate(270deg) translate(100px) rotate(-270deg);
+                    }
+                    .hour.number300 {
+                        transform: rotate(300deg) translate(100px) rotate(-300deg);
+                    }
+                    .hour.number330 {
+                        transform: rotate(330deg) translate(100px) rotate(-330deg);
+                    }
+                    .hour.number360 {
+                        transform: rotate(360deg) translate(100px) rotate(-360deg);
+                    }
         </style>
     </head>
     <body>
         <div id="clock">
-            <div class="hand" id="second"></div>
-            <div class="hand" id="minute"></div>
-            <div class="hand" id="hour"></div>
+            <div id="face">
+                <div class="hour number30">4</div>
+                <div class="hour number60">5</div>
+                <div class="hour number90">6</div>
+                <div class="hour number120">7</div>
+                <div class="hour number150">8</div>
+                <div class="hour number180">9</div>
+                <div class="hour number210">10</div>
+                <div class="hour number240">11</div>
+                <div class="hour number270">12</div>
+                <div class="hour number300">1</div>
+                <div class="hour number330">2</div>
+                <div class="hour number360">3</div>
+            </div>
+
+            <div id="hands">
+                <div class="center"></div>
+                <div class="hand" id="second"></div>
+                <div class="hand" id="minute"></div>
+                <div class="hand" id="hour"></div>
+            </div>
         </div>
 
         <script>
-            var second = document.getElementById('second');
-            var minute = document.getElementById('minute');
-            var hour = document.getElementById('hour');
+            var secondHand = document.getElementById('second');
+            var minuteHand = document.getElementById('minute');
+            var hourHand = document.getElementById('hour');
 
-            var date, currentSecond, currentMinute, currentHour = '';      
+            var date, currentSecond, currentMinute, currentHour = '';
+
+            updateTime();   
 
             setInterval( function() {
                 updateTime();
 
-                second.style.transform = 'rotate(' + calculateHand(currentSecond, 60) + 'deg)'; 
-                minute.style.transform = 'rotate(' + calculateHand(currentMinute, 60) + 'deg)'; 
-                hour.style.transform = 'rotate(' + calculateHand(currentHour, 12) + 'deg)'; 
+                secondHand.style.transform = 'rotate(' + calculateHand(currentSecond, 60) + 'deg)'; 
+                minuteHand.style.transform = 'rotate(' + calculateHand(currentMinute, 60) + 'deg)'; 
+                hourHand.style.transform = 'rotate(' + calculateHand(currentHour + (currentMinute/60), 12) + 'deg)'; 
             }, 1000 );
 
-            function calculateHand(current, factor) {
-                return (current/factor)*360;
+            function calculateHand(currentMoment, factor) {
+                return (currentMoment / factor) * 360;
             }
 
             function updateTime() {
