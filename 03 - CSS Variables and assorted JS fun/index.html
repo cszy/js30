@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            :root {
+                --base: #ffc600;
+                --spacing: 10px;
+                --blur: 200px;
+            }
+
+            #blurbox::before {
+                position: absolute;
+                content: ' ';
+                background-image: url('http://i.imgur.com/RHLIROg.jpg');
+                background-size: cover;
+                filter: blur(var(--blur));
+                opacity: 10px;
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div id='blurbox' name="blur"></div>
+
+        <script type="text/javascript">
+            const inputs = document.querySelectorAll('#blurbox');
+            var blurAmount = 200;
+
+            function handleUpdate() {
+                input = document.querySelectorAll('#blurbox');
+
+                var blurStyle = document.styleSheets[0];
+                var blurRules = blurStyle.rules; 
+                blurStyle.insertRule('#blurbox:before { filter: blur('+ blurAmount-- +'px) }', blurRules.length);
+            }
+
+            inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+        </script>
+    </body>
+</html>
