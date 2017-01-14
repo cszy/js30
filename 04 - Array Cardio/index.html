@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+            #filters span {
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <!--<h1>Top Private Unicorns</h1>-->
+            <div id ="search">
+                <span>Search</span>
+                <input type="text" id="letterSearch">
+            </div>
+
+            <div id="filters">
+                <span id="none">No Filter</span> |
+                <span id="newest-joined">Newest Joined</span> |
+                <span id="newest-founded">Newest Founded</span> |
+                <span id="2016">Joined In 2016</span> |
+                <span id="names">Just Names</span> |
+                <span id="total-value">Total Value</span> |
+                <span id="years-to-unicorn">Sorted by Years Founded -> Unicorn</span> |
+                <span id="total-by-year">Totals By Year</span>
+            </div>
+            
+            <div id="unicorns">
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            const topUnicorns = [
+                { name: "Uber", billions: "68", yearFounded: "", unicornYear: "2013"},
+                { name: "Xiaomi", billions: "46", yearFounded: "",  unicornYear: "2011"},
+                { name: "Didi Chuxing", billions: "33.8", yearFounded: "",  unicornYear: "2014"},
+                { name: "Airbnb", billions: "30", yearFounded: "",  unicornYear: "2011"},
+                { name: "Palantir", billions: "20", yearFounded: "",  unicornYear: "2011"},
+                { name: "Lu", billions: "18.5", yearFounded: "",  unicornYear: "2014"},
+                { name: "China Internet Plus Holding", billions: "18", yearFounded: "",  unicornYear: "2015"},
+                { name: "Snapchat", billions: "18", yearFounded: "",  unicornYear: "2013"},
+                { name: "WeWork", billions: "16.9", yearFounded: "",  unicornYear: "2014"},
+                { name: "Flipkart", billions: "16", yearFounded: "",  unicornYear: "2012"},
+                { name: "SpaceX", billions: "12", yearFounded: "",  unicornYear: "2012"},
+                { name: "Pinterest", billions: "11", yearFounded: "",  unicornYear: "2012"},
+                { name: "Dropbox", billions: "10", yearFounded: "",  unicornYear: "2011"},
+                { name: "Infor", billions: "10", yearFounded: "",  unicornYear: "2016"},
+                { name: "DJI", billions: "10", yearFounded: "",  unicornYear: "2015"}
+            ];
+
+            var unicornContainer = document.getElementById('unicorns');
+            var noneFilter = document.getElementById("none");
+            var newestJoinedFilter = document.getElementById("newest-joined");
+            var newestFoundedFilter = document.getElementById("newest-founded");
+            var twentySixteenFilter = document.getElementById("2016");
+            var namesFilter = document.getElementById("names");
+            var totalValueFilter = document.getElementById("total-value");
+            var yearsToUnicornFilter = document.getElementById("years-to-unicorn");
+            var totalByYearFilter = document.getElementById("total-by-year");
+
+            noneFilter.addEventListener("click", none, false);
+            newestJoinedFilter.addEventListener("click", newestJoined, false);
+            newestFoundedFilter.addEventListener("click", newestFounded, false);
+            twentySixteenFilter.addEventListener("click", twentySixteen, false);
+
+            displayUnicorns(topUnicorns);
+
+            function none() {
+                displayUnicorns(topUnicorns);
+            }
+
+            function newestJoined() {
+                const newestJoinedUnicorns = topUnicorns.sort((a, b) => a.unicornYear < b.unicornYear ? 1 : -1);
+                displayUnicorns(newestJoinedUnicorns);
+            }
+
+            function newestFounded() {
+                const yearFoundedUnicorns = topUnicorns.sort((a, b) => a.yearFounded < b.yearFounded ? 1 : -1);
+                displayUnicorns(newestJoinedUnicorns);
+            }
+
+            function twentySixteen() {
+                const twentySixteenUnicorns = topUnicorns.filter(unicorn => (unicorn.unicornYear == 2016));
+                displayUnicorns(twentySixteenUnicorns);
+            }
+
+            function displayUnicorns(unicornArr) {
+                unicornContainer.innerHTML = '';
+
+                unicornArr.forEach(function(unicorn) {
+                    console.log(unicorn);
+
+
+                    var unicornList = document.createElement('div');      
+                    unicornList.innerHTML = unicorn.name;
+                    unicornContainer.appendChild( unicornList );
+                    
+                });                
+            }
+        </script>
+    </body>
+</html>
