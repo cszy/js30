@@ -17,3 +17,6 @@ https://fuschia-shop.gomix.me/
 
 *Day 4:*
 https://stingy-partridge.gomix.me/
+
+*Day 5:*
+https://mirage-humor.gomix.me/
