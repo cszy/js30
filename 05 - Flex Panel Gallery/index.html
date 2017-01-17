@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+        	* {
+        		background-position: center; 
+        	}
+
+        	body {
+        		margin: 0px;
+        		padding: 0px;
+        		font-family: sans-serif;
+        		color: #fff;
+        		font-weight: bold;
+        	}
+
+        	#container {
+        		display: flex;
+        		flex-direction: row;
+        		flex-wrap: nowrap;
+        		justify-content: center;
+        		align-items: center;
+        		width: 100%;
+        		height: 100%;
+        		position: fixed !important;
+    			top: 0;
+    			right: 0;
+    			bottom: 0;
+    			left: 0;
+        	}
+        		#container .door {
+        			display: flex;
+        			flex-grow: 1;
+        			flex-direction: column;
+        			align-items: center;
+        			justify-content: center;
+        			height: 100%;
+        			cursor: pointer;
+        		}
+        			.door {
+        				background-image: url(http://i.imgur.com/sH2Ytbb.png);
+        				background-repeat: no-repeat;
+        				background-size: 100%;
+        			}
+
+        			.door.open {
+        				background-image: url(http://i.imgur.com/FydBlbd.png);
+        				background-repeat: no-repeat;
+        				background-size: 40%;
+        				background-position: center; 
+        			}
+
+        			.door .prize {
+        				display: flex;
+        				flex: 6 !important;
+        				justify-content: flex-end;
+        				height: 400px;
+        				width: 100%;
+        				background-position: bottom;
+        			}
+
+        			.door .prize.car {
+        				background-image: url(http://i.imgur.com/qQDqvPL.png);
+        				background-repeat: no-repeat;
+        				background-size: 70%;
+        			}
+        			.door .prize.goat {
+        				background-image: url(http://i.imgur.com/fDReGil.png);
+        				background-repeat: no-repeat;
+        				background-size: 70%;
+        			}
+
+        			#container .door.open {
+        				flex: 4;
+        				font-size: 40px;
+        			}
+
+        			#container .door > * {
+        				display: flex;
+    					flex: 1;
+    					flex-grow: 1;
+    					align-items: center;
+        				justify-content: center;
+        			}
+
+        			#container .door > *:nth-child(2) {
+        				transform: translateY(100%);
+        			}
+
+        			#container .door.open > *:nth-child(2) {
+        				transform: translateY(0);
+        			}
+        </style>
+    </head>
+    <body>
+        <div id="container">
+        	<div class="door door1"><span></span></div>
+        	<div class="door door2"><span></span></div>
+        	<div class="door door3"><span></span></div>
+        	<div class="door door4"><span></span></div>
+        </div>
+
+        <script type="text/javascript">
+	        assignPrizes();
+
+	        const doors = document.querySelectorAll('.door');
+	        doors.forEach(door => door.addEventListener('click',openDoor));
+
+	        function assignPrizes() {
+				var car = Math.round(Math.random()*3);
+
+		        for(var i=0; i<4; i++){
+		        	var currentDoor = document.querySelector(".door"+(i+1));
+		        	var doorContents = document.createElement('span');
+	                doorContents.classList.toggle('prize'); 
+
+		        	if(i == car) {
+		        		doorContents.classList.toggle('car'); 
+		        	} else {
+		        		doorContents.classList.toggle('goat'); 
+		        	}
+
+		        	currentDoor.appendChild( doorContents );
+		        }	        	
+	        }
+
+	        function openDoor() {
+	        	this.classList.toggle('open');
+	        }
+        </script>
+    </body>
+</html>
