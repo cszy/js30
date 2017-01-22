@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style type="text/css">
+        	body {
+        		font-family: sans-serif;
+        	}
+
+        	#container {
+        		display: flex;
+        		justify-content: center;
+    			align-items: initial;
+        	}
+
+        	#airport-details {
+        		margin-top: 38px;
+        	}
+
+        	#search, #airport-details {
+        		width: 440px;
+        		padding: 20px;
+        	}
+        		#airport-details div {
+        			padding: 10px;
+        		}
+        		.intro, #airport-details .name, .no-data {
+        			font-size: 20px;
+        			font-weight: bold;
+        		}
+
+        	.no-data {
+        		margin-top: 40px;
+        		color: #FF4240;
+        	}
+
+        	#airport-search {
+        		width: 80%;
+			    height: 20px;
+			    padding: 10px;
+			    font-size: 18px;
+        	}
+        		#airport-search:focus {
+        			background-color: #F8FFF2;
+        		}
+
+        	.airport {
+        		height: 20px;
+        		padding: 10px;
+        		cursor: pointer;
+        	}
+        		.airport:hover {
+        			color: #1972FF;
+        		}
+        </style>
+    </head>
+    <body>
+        <div id="container">
+			<div id="search">
+				<p class="intro">Search for an airport code or name.<br> Then click on the airport to see live details.</p>
+				<input type="text" id="airport-search">
+				<ul id="results">
+				</ul>
+			</div>
+			
+			<div id="airport-details">
+			</div>
+        </div>
+
+        <script type="text/javascript">
+        	const airportDataEndpoint = 'https://raw.githubusercontent.com/jbrooksuk/JSON-Airports/master/airports.json';
+        	const airportData = [];
+        	const usAirportData = [];
+        	const liveAirportData = [];
+
+        	fetch(airportDataEndpoint)
+  				.then(blob => blob.json())
+  				.then(data => airportData.push(...data))
+  				.then( function() {
+  					usAirportData.push(...airportData.filter(airport => {
+						const regex = new RegExp('US', 'gi');
+						return airport.iso.match(regex);
+					}) );
+  				})
+
+        	const airportStatusEndpoint = 'http://services.faa.gov/airport/status/';
+			const airportStatusData = [];
+
+            const airportSearchInput = document.getElementById('airport-search');
+            const airportResults = document.getElementById('results');
+            const airportDetails = document.getElementById('airport-details');
+
+			airportSearchInput.addEventListener('keyup', displayAirports);
+
+			function displayAirports() {
+				const matchArray = findMatches(this.value, usAirportData);
+
+				airportResults.innerHTML = '';
+
+				matchArray.forEach(function(item) {
+					var li = document.createElement('li');
+					li.innerHTML = "<div class='airport'><span class='iata'>" + item.iata + "</span>: " + item.name + "</div>";
+					li.addEventListener('click', searchAirports);
+					airportResults.appendChild(li);
+				});
+			}
+
+			function findMatches(text, usAirportData) {
+				return usAirportData.filter(airport => {
+					const regex = new RegExp(text, 'gi');
+
+					return airport.iata.match(regex) || airport.name.match(regex);
+				});
+			}
+
+            function searchAirports( code ) {
+            	liveAirportData.length = 0;
+
+            	fetch(airportStatusEndpoint + this.querySelectorAll('.iata')[0].textContent + '?format=application/json')
+  					.then(blob => blob.json())
+  					.then(data => liveAirportData.push(data))
+  					.then(function() {
+  						if(typeof liveAirportData[0] === 'object') {
+  							var output = `
+								<div id="airport-details">
+									<div class="name">
+										${liveAirportData[0].name} (${liveAirportData[0].IATA})
+									</div>
+									<div class="location">
+										${liveAirportData[0].city}, ${liveAirportData[0].state}
+									</div>
+									<div class="status">
+										${liveAirportData[0].status.reason}
+									</div>
+									<div class="weather">
+										Weather from NOAA as of ${liveAirportData[0].weather.meta.updated}:
+
+										<div class="temperature">
+											${liveAirportData[0].weather.temp}
+										</div>
+										<div class="visibility">
+											Visibility: ${liveAirportData[0].weather.visibility} miles
+										</div>
+										<div class="forecast">
+											${liveAirportData[0].weather.weather}
+										</div>
+										<div class="wind">
+											Wind: ${liveAirportData[0].weather.wind}
+										</div>
+									</div>
+								</div>
+								`;
+
+							airportDetails.innerHTML = output;
+  						}
+  					})
+  					.catch(function(error){
+  						airportDetails.innerHTML = '<div class="no-data">The FAA does not provide live status data for this airport</div>';
+  					});
+            }
+        </script>
+    </body>
+</html>
