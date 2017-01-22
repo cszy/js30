@@ -20,3 +20,6 @@ https://stingy-partridge.gomix.me/
 
 *Day 5:*
 https://mirage-humor.gomix.me/
+
+*Day 6:*
+https://secret-flare.gomix.me/

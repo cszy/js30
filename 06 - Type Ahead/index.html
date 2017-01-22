@@ -82,7 +82,7 @@
 					}) );
   				})
 
-        	const airportStatusEndpoint = 'http://services.faa.gov/airport/status/';
+        	const airportStatusEndpoint = 'https://services.faa.gov/airport/status/';
 			const airportStatusData = [];
 
             const airportSearchInput = document.getElementById('airport-search');
@@ -129,7 +129,7 @@
 										${liveAirportData[0].city}, ${liveAirportData[0].state}
 									</div>
 									<div class="status">
-										${liveAirportData[0].status.reason}
+										Status: ${liveAirportData[0].status.reason} ${liveAirportData[0].status.type}
 									</div>
 									<div class="weather">
 										Weather from NOAA as of ${liveAirportData[0].weather.meta.updated}:
