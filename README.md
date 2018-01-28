@@ -1,6 +1,6 @@
 *Purpose:*
 
-Start 2017 by building 30 mini apps with no frameworks, just vanilla Javascript.
+Start 2017 by building 30 mini apps with no frameworks, just vanilla JavaScript.
 
 *Getting Started:*
 
